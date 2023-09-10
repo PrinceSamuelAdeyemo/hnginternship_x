@@ -26,7 +26,6 @@ class Index(APIView):
             5:"Saturday",
             6:"Sunday",
             }
-        #return Response("Hello, World");
         context = {
             "slack_name": slack_name,
             "current_day": day_of_the_week[today],
