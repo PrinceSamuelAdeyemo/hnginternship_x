@@ -13,10 +13,11 @@ from datetime import datetime, timezone
 class Index(APIView):
     
     def get(self, request):
-        slack_name = request.data['slack_name']
-        track = request.data['track']
+        slack_name = request.query_params['slack_name']
+        track = request.query_params['track']
         
         today = datetime.today().weekday()
+        utc_time = datetime.now(timezone.utc).replace(tzinfo=timezone.utc)
         day_of_the_week = {
             0:"Monday",
             1:"Tuesday",
@@ -29,13 +30,11 @@ class Index(APIView):
         context = {
             "slack_name": slack_name,
             "current_day": day_of_the_week[today],
-            "utc_time": datetime.now(timezone.utc).replace(tzinfo=timezone.utc),
+            "utc_time": f"{utc_time}",
             "track": track,
             "github_file_url": "https://github.com/PrinceSamuelAdeyemo/hnginternship_x/blob/main/hnginternship_x_app/views.py",
             "github_repo_url": "https://github.com/PrinceSamuelAdeyemo/hnginternship_x",
             "status_code": HttpResponse.status_code,
         }
         
-        jsoncontext = json.dumps(context, indent=4, default=str)
-        #return HttpResponse(f"{slack_name} and {level}")
-        return Response(jsoncontext)
+        return HttpResponse(json.dumps(context, indent=2), content_type="application/json")
