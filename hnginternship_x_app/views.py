@@ -17,7 +17,7 @@ class Index(APIView):
         track = request.query_params['track']
         
         today = datetime.today().weekday()
-        utc_time = datetime.now(timezone.utc).replace(tzinfo=timezone.utc)
+        utc_time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
         day_of_the_week = {
             0:"Monday",
             1:"Tuesday",
